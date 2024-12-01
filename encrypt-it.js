@@ -1,26 +1,62 @@
 /*
  * Starter file 
  */
-(function() {
+(function () {
   "use strict";
 
   /**
-   * The starting point in our program, setting up a listener
-   * for the "load" event on the window, signalling the HTML DOM has been constructed
-   * on the page. When this event occurs, the attached function (init) will be called.
+   * Initializes the event listeners when the page is loaded.
    */
   window.addEventListener("load", init);
 
   /**
-   * TODO: Write a function comment using JSDoc.
+   * Initializes event handlers for buttons.
    */
   function init() {
-    // Note: In this function, we usually want to set up our event handlers
-    // for UI elements on the page.
+    const encryptButton = document.getElementById("encrypt-it");
+    const resetButton = document.getElementById("reset");
+
+    encryptButton.addEventListener("click", handleEncrypt);
+    resetButton.addEventListener("click", handleReset);
   }
 
-  // Add any other functions in this area (you should not implement your
-  // entire program in the init function, for similar reasons that
-  // you shouldn't write an entire Java program in the main method).
+  /**
+   * Handles the encryption of text using a basic shift cipher.
+   */
+  function handleEncrypt() {
+    const inputText = document.getElementById("input-text").value;
+    const encryptedText = shiftCipher(inputText);
+    document.getElementById("result").textContent = encryptedText;
+  }
 
+  /**
+   * Clears the input and result text areas.
+   */
+  function handleReset() {
+    document.getElementById("input-text").value = "";
+    document.getElementById("result").textContent = "";
+  }
+
+  /**
+   * Applies a basic shift cipher to the input text.
+   * @param {string} text - The input text to encrypt.
+   * @returns {string} - The encrypted text.
+   */
+  function shiftCipher(text) {
+    text = text.toLowerCase();
+    let result = "";
+
+    for (let i = 0; i < text.length; i++) {
+      if (text[i] < "a" || text[i] > "z") {
+        result += text[i]; // Keep non-alphabet characters unchanged
+      } else if (text[i] === "z") {
+        result += "a"; // Wrap 'z' to 'a'
+      } else {
+        let letter = text.charCodeAt(i);
+        result += String.fromCharCode(letter + 1);
+      }
+    }
+
+    return result;
+  }
 })();
